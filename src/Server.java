@@ -23,10 +23,13 @@ public class Server {
   
   public static Semaphore s;
   
+  public static Semaphore t;
+  
   public static void main (String[] args) {
 	  
 	clock = 0;
 	s = new Semaphore(1);
+	t = new Semaphore(1);
 
     Scanner sc = new Scanner(System.in);
     myID = sc.nextInt();
@@ -180,11 +183,45 @@ public class Server {
 	  }
   }
   
-  public static synchronized int incrementAndGetClock()
+  public static int getClock()
   {
+	  try {
+			t.acquire(1);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		  int temp = clock;
+		  t.release(1);
+		  
+		  return temp;
+  }
+  public static int incrementAndGetClock()
+  {
+	  try {
+		t.acquire(1);
+	} catch (InterruptedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	  int temp = clock;
 	  clock++;
+	  t.release(1);
+	  
 	  return temp;
+	  
+  }
+  
+  public static void updateClock(int timeStamp)
+  {
+	  try {
+		t.acquire(1);
+	} catch (InterruptedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	  clock = Integer.max(clock, timeStamp) + 1;
+	  t.release(1);
   }
   
   

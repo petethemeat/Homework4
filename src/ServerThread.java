@@ -45,6 +45,8 @@ public class ServerThread implements Runnable {
 					int timeStamp = Integer.parseInt(st.next());
 					String com = sc.nextLine();
 					
+					Server.updateClock(timeStamp);
+					
 					processServerRequest(new Command(serverId, timeStamp, com), tcpOutput);
 				}
 				
@@ -185,7 +187,7 @@ public class ServerThread implements Runnable {
 	private void processServerRequest(Command com, PrintWriter pOut)
 	{
 		Server.enqueue(com);
-		pOut.println("Command accepted");
+		pOut.println(Server.getClock());
 	}
 	
 	private void sendServerRequest(Command com)
@@ -203,7 +205,9 @@ public class ServerThread implements Runnable {
 				pOut.flush();
 				
 				//TODO We need to set a time out rate for this line
-				in.readLine();
+				String response = in.readLine();
+				
+				Server.updateClock(Integer.parseInt(response));
 				
 				in.close();
 				clientSocket.close();

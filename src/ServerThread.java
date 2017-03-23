@@ -231,6 +231,7 @@ public class ServerThread implements Runnable {
 				i++;
 				continue;
 			}
+			i++;
 			try {
 				Socket serverSocket = new Socket(server[0], Integer.parseInt(server[1]));
 				// serverSocket.setSoTimeout(100);
@@ -254,7 +255,6 @@ public class ServerThread implements Runnable {
 			} catch (NoSuchElementException e) {
 				return;
 			}
-			i++;
 		}
 	}
 }

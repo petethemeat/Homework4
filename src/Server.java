@@ -140,7 +140,10 @@ public class Server {
 			e.printStackTrace();
 		}
 
-		Command com = queue.removeFirst();
+		Command com = null;
+		
+		if(!queue.isEmpty())
+		com = queue.removeFirst();
 
 		//Server.class.notifyAll();
 
@@ -149,6 +152,7 @@ public class Server {
 	}
 
 	public static Command getFirst() {
+		if(queue.isEmpty()) return null;
 		return queue.getFirst();
 	}
 

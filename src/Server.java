@@ -83,8 +83,8 @@ public class Server {
 
 	
 			try {
-				ServerSocket tcpListener = new ServerSocket(Integer.parseInt(servers.get(myID-1)[1]));
-				System.out.println("Server host: "+servers.get(myID-1)[0]+" ,port number: "+servers.get(myID-1)[1]);
+				ServerSocket tcpListener = new ServerSocket(Integer.parseInt(servers.get(myID)[1]));
+				System.out.println("Server host: "+servers.get(myID)[0]+" ,port number: "+servers.get(myID)[1]);
 				Socket dataSocket = new Socket();
 
 				System.out.println("Server started to listen Tcp Port");

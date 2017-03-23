@@ -193,8 +193,13 @@ public class ServerThread implements Runnable {
 	{
 		String request = "server "+ com.serverId + " " + com.timeStamp + " " + com.command;
 		
+		int i = 0;
+		
 		for(String[] server : Server.servers)
 		{
+			if(i == Server.myID) {i++; continue;}
+			i++;
+			
 			try {
 				Socket serverSocket = new Socket(server[0],Integer.parseInt(server[1]));
 				//serverSocket.setSoTimeout(100);
@@ -210,6 +215,11 @@ public class ServerThread implements Runnable {
 				
 				in.close();
 				serverSocket.close();
+				
+				
+				
+				
+				
 			} catch (InterruptedIOException iioe){
 				System.out.println("Ooops: Server timedout!!!");
 				iioe.printStackTrace();
@@ -227,8 +237,11 @@ public class ServerThread implements Runnable {
 	
 	private void notifyServer()
 	{
+		int i = 0;
 		for(String[] server : Server.servers)
 		{
+			
+			if(i == Server.myID){ i++; continue;}
 			try {
 				Socket serverSocket = new Socket(server[0],Integer.parseInt(server[1]));
 				//serverSocket.setSoTimeout(100);

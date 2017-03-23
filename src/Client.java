@@ -58,7 +58,7 @@ public class Client {
 				Client.Server currentServer = serverQueue.get(i);
 				System.out.println("host: "+currentServer.hostAddress+" , port: "+currentServer.port);
 				Socket clientSocket = new Socket(currentServer.hostAddress, currentServer.port);
-				//clientSocket.setSoTimeout(100);
+				clientSocket.setSoTimeout(50000);
 				PrintWriter pOut = new PrintWriter(clientSocket.getOutputStream());
 				BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
@@ -67,14 +67,37 @@ public class Client {
 
 		
 				String response = in.readLine();
-				System.out.println(response);
-			
+				
+				if(token.equals("list"))
+				{
+					Scanner s = new Scanner(response);
+					while(s.hasNext())
+					{
+						System.out.print(s.next() + " ");
+						System.out.println(s.next());
+					}
+				}
+				else if(token.equals("search"))
+				{
+					Scanner s = new Scanner(response);
+					while(s.hasNext())
+					{
+						System.out.print(s.next() + " ");
+						System.out.print(s.next() + " ");
+						System.out.println(s.next());
+					}
+				}
+				else
+				{
+					System.out.println(response);
+				}
 
 				in.close();
 				clientSocket.close();
 				break;
 			} catch (InterruptedIOException iioe) {
 				System.out.println("Server timed out!!");
+				
 			} catch (UnknownHostException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

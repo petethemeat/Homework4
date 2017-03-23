@@ -153,7 +153,7 @@ public class ServerThread implements Runnable {
 			
 			for(OrderTable.Order order : userOrders)
 			{
-				sb.append(order.getOrderId()+ " " + order.getProductName() + " " + order.getQuantity() + "\n");
+				sb.append(order.getOrderId()+ " " + order.getProductName() + " " + order.getQuantity() + " ");
 			}
 			
 			response = sb.toString();
@@ -170,7 +170,7 @@ public class ServerThread implements Runnable {
 			
 			for(Inventory.Product product : inventory)
 			{
-				sb.append(product.getName() + " "+ product.getQuantity());
+				sb.append(product.getName() + " "+ product.getQuantity()+ " ");
 			}
 			response = sb.toString();
 		}

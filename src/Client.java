@@ -56,6 +56,7 @@ public class Client {
 		for (int i = 0; i < len; i++) {
 			try {
 				Client.Server currentServer = serverQueue.get(i);
+				System.out.println("host: "+currentServer.hostAddress+" , port: "+currentServer.port);
 				Socket clientSocket = new Socket(currentServer.hostAddress, currentServer.port);
 				clientSocket.setSoTimeout(100);
 				PrintWriter pOut = new PrintWriter(clientSocket.getOutputStream());
@@ -63,18 +64,11 @@ public class Client {
 
 				pOut.println(cmd);
 				pOut.flush();
-				String current;
 
-				if (token.equals("list") || token.equals("search")) {
-					while ((current = in.readLine()) != null) {
-						if (current.equals("terminate"))
-							break;
-						System.out.println(current);
-					}
-				} else {
-					String response = in.readLine();
-					System.out.println(response);
-				}
+		
+				String response = in.readLine();
+				System.out.println(response);
+			
 
 				in.close();
 				clientSocket.close();

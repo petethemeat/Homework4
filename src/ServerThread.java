@@ -1,12 +1,14 @@
 
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.InterruptedIOException;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
-import java.io.*;
 
 
 
@@ -14,8 +16,6 @@ public class ServerThread implements Runnable {
 
 	Inventory inv;
 	OrderTable orders;
-	DatagramSocket udpsocket;
-	DatagramPacket udprPacket;
 	Socket tcpsocket;
 
 
@@ -27,7 +27,6 @@ public class ServerThread implements Runnable {
 
 	public void run() {
 		System.out.println("Thread is started..");
-		String received = null;
 		try {
 
 				System.out.println("Tcp starts");
@@ -192,25 +191,28 @@ public class ServerThread implements Runnable {
 	
 	private void sendServerRequest(Command com)
 	{
-		String request = com.serverId + " " + com.timeStamp + " " + com.command;
+		String request = "server "+ com.serverId + " " + com.timeStamp + " " + com.command;
 		
 		for(String[] server : Server.servers)
 		{
 			try {
-				Socket clientSocket = new Socket(server[0],Integer.parseInt(server[1]));
-				PrintWriter pOut = new PrintWriter(clientSocket.getOutputStream());
-				BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+				Socket serverSocket = new Socket(server[0],Integer.parseInt(server[1]));
+				//serverSocket.setSoTimeout(100);
+				PrintWriter pOut = new PrintWriter(serverSocket.getOutputStream());
+				BufferedReader in = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
 				
 				pOut.println(request);
 				pOut.flush();
 				
-				//TODO We need to set a time out rate for this line
 				String response = in.readLine();
-				
+				if(response != null && !response.contentEquals(""))
 				Server.updateClock(Integer.parseInt(response));
 				
 				in.close();
-				clientSocket.close();
+				serverSocket.close();
+			} catch (InterruptedIOException iioe){
+				System.out.println("Ooops: Server timedout!!!");
+				iioe.printStackTrace();
 			} catch (UnknownHostException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -219,7 +221,7 @@ public class ServerThread implements Runnable {
 				e.printStackTrace();
 			} catch (NoSuchElementException e){
 				return;
-			}
+			} 
 		}
 	}
 	
@@ -228,17 +230,20 @@ public class ServerThread implements Runnable {
 		for(String[] server : Server.servers)
 		{
 			try {
-				Socket clientSocket = new Socket(server[0],Integer.parseInt(server[1]));
-				PrintWriter pOut = new PrintWriter(clientSocket.getOutputStream());
+				Socket serverSocket = new Socket(server[0],Integer.parseInt(server[1]));
+				//serverSocket.setSoTimeout(100);
+				PrintWriter pOut = new PrintWriter(serverSocket.getOutputStream());
 
 				
 				pOut.println("dequeue");
 				pOut.flush();
 				
-				//TODO We need to set a time out rate for this line
-				
-				clientSocket.close();
-			} catch (UnknownHostException e) {
+				serverSocket.close();
+			}catch(InterruptedIOException iioe){
+				System.out.println("Ooops: Server timedout!!!");
+				iioe.printStackTrace();
+			} 
+			catch (UnknownHostException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {

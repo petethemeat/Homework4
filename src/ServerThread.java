@@ -42,7 +42,8 @@ public class ServerThread implements Runnable {
 				{
 					int serverId = Integer.parseInt(st.next());
 					int timeStamp = Integer.parseInt(st.next());
-					String com = sc.nextLine();
+					
+					String com = st.nextLine();
 					
 					Server.updateClock(timeStamp);
 					

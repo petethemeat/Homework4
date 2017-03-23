@@ -58,7 +58,7 @@ public class Client {
 				Client.Server currentServer = serverQueue.get(i);
 				System.out.println("host: "+currentServer.hostAddress+" , port: "+currentServer.port);
 				Socket clientSocket = new Socket(currentServer.hostAddress, currentServer.port);
-				clientSocket.setSoTimeout(100);
+				//clientSocket.setSoTimeout(100);
 				PrintWriter pOut = new PrintWriter(clientSocket.getOutputStream());
 				BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 

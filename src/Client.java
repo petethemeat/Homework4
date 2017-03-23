@@ -98,15 +98,17 @@ public class Client {
 			} catch (InterruptedIOException iioe) {
 				System.out.println("Server timed out!!");
 				
+			} catch (java.net.ConnectException e){
+				continue;
 			} catch (UnknownHostException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (NoSuchElementException e) {
+			}catch (NoSuchElementException e) {
 				return;
-			}
+			} 
 		}
 
 	}
